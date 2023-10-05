@@ -93,13 +93,10 @@ function showCustomPopup() {
     customPopup.style.display = 'block';
 }
 
-
 function closeCustomPopup() {
     const customPopup = document.getElementById('customPopupId');
     customPopup.style.display = 'none';
 }
-
-
 
 /// calendario 
 
@@ -135,3 +132,5 @@ function updateCalendar() {
 setInterval(updateCalendar, 1000);
 
 updateCalendar();
+
+//////

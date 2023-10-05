@@ -7,63 +7,74 @@
         <div class="assinatura">
             <p>DATA - DIA</p>
             <p>ENTRADA</p>
-            <p>ASSINATURA</p>
+            <p class="digitalmente">ASSINATURA</p>
             <p>SAÍDA</p>
             <p></p>
         </div>
 
         <div class="info-day">
             <p>01/09 - Seg </p>
-            <p class="hora">12:00</p>
-            <p class="digital">Assinado Digitalmente</p>
-            <p class="saida">19:00</p>
-
+            <p>12:00</p>
+            <p class="digitalmente">Assinado Digitalmente</p>
+            <p>19:00</p>
             <div class="edit-out-info">
-                <a href=""><i class="bi bi-pencil-square"></i></a>
-                <a href=""><i class="bi bi-trash3"></i></a>
+                <a href="" title="Editar"><i class="bi bi-pencil-square"></i></a>
+                <a href="" title="Excluir"><i class="bi bi-trash3"></i></a>
             </div>
         </div>
+
+            <div class="mobile" hidden>
+                <p class="info2">Dia/Mês</p>
+                <p></p>
+                <p class="info2">Entrada<br>/Saída</p>
+            </div>
+
+            <div class="info-mobile" hidden>
+                <p>03/10</p>
+                <p>Assinado</p>
+                <p>10:00<br>/16:00</p>
+                <div class="edit-out-info">
+                    <a href=""><i class="bi bi-pencil-square"></i></a>
+                    <a href=""><i class="bi bi-trash3"></i></a>
+                </div>
+            </div>
     </div>
+<!------->
 
-<!------->    
-
-
-    <!-- CALENDÁRIO -->
-        <div class="days">
+<!-- CALENDÁRIO -->
+    <div class="days">
             <div class="calendar">
                 <h1 id="currentMonth"></h1>
                 <div class="day">Hoje</div>
                 <div id="currentDate" class="date"></div>
                 <div id="currentDayOfWeek" class="day-of-week"></div>
             </div>
-        </div>
+    </div>
 
-    <!-------->
+<!-------->
 
     
 <!-- MARCAR FREQUÊNCIA-->
-        <div>
-            <button class="markup_button" id="openBtn" title="Registrar/Editar Frequência">
+    <button class="markup_button" id="openBtn" title="Registrar/Editar Frequência">
                 <i class="bi bi-plus-circle"></i><br>
                 Novo Registro
-            </button>
-        </div>
-
-
+    </button>
 <!--------->
-
-
-
 
 <!-- POPUPS -->
 
-        <div id="popup" class="popup">
+    <div id="popup" class="popup">
             <div class="popup-content" id="popup-content">
                 <span id="closeBtn" class="fechar">
                     <i class="bi bi-x-lg"></i>
                 </span>
                 <h2>Edite seu horário abaixo</h2><br>
                 
+                <div class="time-entry">
+                    <label for="timePicker">Edite o Dia para registrar o ponto:</label>
+                    <input type="date" id="timePicker">
+                </div>
+<br><br>
                 <div class="time-entry">
                     <label for="timePicker">Editar o horário de entrada:</label>
                     <input type="time" id="timePicker">
@@ -75,18 +86,16 @@
                 </div><br><br>
                 <button onclick="saveTime()">Salvar</button>
             </div>
-        </div>
 
-        <div id="confirmationPopup" class="confirmation-popup">
+    </div>
+
+    <div id="confirmationPopup" class="confirmation-popup">
             <div class="confirmation-content">
                 {% load static %}
                 <h2>Frequência registrada com sucesso!</h2>
                 <br>
                 <img src="{% static 'images/404-tick.png' %}" alt="img">
             </div>
-        </div>
-
+    </div>
  <!---------------->
-
-
 {% endblock content %}
