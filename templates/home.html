@@ -12,16 +12,41 @@
             <p></p>
         </div>
 
-        <div class="info-day">
-            <p>01/09 - Seg </p>
-            <p>12:00</p>
+        <div class="info-day" id="infoDayContainer">
+            <p>01/09 - Seg</p>
+            <p class="time" contenteditable="false">12:00</p>
             <p class="digitalmente">Assinado Digitalmente</p>
-            <p>19:00</p>
+            <p class="time" contenteditable="false">19:00</p>
             <div class="edit-out-info">
-                <a href="" title="Editar"><i class="bi bi-pencil-square"></i></a>
-                <a href="" title="Excluir"><i class="bi bi-trash3"></i></a>
+                <button title="Editar" onclick="abrirPopupEdicao(this)">
+                    <i class="bi bi-pencil-square"></i>
+                </button>
+                <button title="Deletar" onclick="abrirPopupDeletar()">
+                    <i class="bi bi-trash3"></i>
+                </button>
             </div>
         </div>
+
+        <div id="popupEdicao" class="popup-edit">
+            <div class="popup-edi">
+                <h2>Editar Horário</h2>
+                <label for="novoHorarioEntrada">Mude o horário de entrada:</label>
+                <input type="time" id="novoHorarioEntrada" placeholder="Novo Horário de Entrada">
+                <label for="novoHorarioSaida">Mude o horário de saída:</label>
+                <input type="time" id="novoHorarioSaida" placeholder="Novo Horário de Saída">
+                <button onclick="confirmarEdicao()">Salvar</button>
+                <button onclick="fecharPopup('popupEdicao')">Cancelar</button>
+            </div>
+        </div>
+
+        <div id="popupDeletar" class="popup-delete">
+            <div class="popup-exc">
+                <h2>Tem certeza que deseja exluir este item ?</h2>
+                <button class="btn-del" onclick="confirmarDelecao()">Deletar</button>
+                <button onclick="fecharPopup('popupDeletar')">Cancelar</button>
+            </div>
+        </div>
+
 
             <div class="mobile" hidden>
                 <p class="info2">Dia/Mês</p>
@@ -76,12 +101,12 @@
                 </div>
 <br><br>
                 <div class="time-entry">
-                    <label for="timePicker">Editar o horário de entrada:</label>
+                    <label for="timePicker">Registrar horário de entrada:</label>
                     <input type="time" id="timePicker">
                 </div>
                 
                 <div class="time-entry">
-                    <label for="timePicker">Editar o horário de saída:</label>
+                    <label for="timePicker">Registrar horário de saída:</label>
                     <input type="time" id="timePicker">
                 </div><br><br>
                 <button onclick="saveTime()">Salvar</button>
@@ -97,5 +122,23 @@
                 <img src="{% static 'images/404-tick.png' %}" alt="img">
             </div>
     </div>
+
+    <script src="{% static 'script/main.js' %}">
+
+        document.getElementById("btnOpenPopup").addEventListener("click", function () {
+            document.getElementById("customConfirmationPopup").style.display = "block";
+        });
+        
+        document.getElementById("btnCancelDelete").addEventListener("click", function () {
+            document.getElementById("customConfirmationPopup").style.display = "none";
+        });
+        
+                // Adicione aqui a lógica para a ação de exclusão
+        document.getElementById("btnConfirmDelete").addEventListener("click", function () {
+        
+            document.getElementById("customConfirmationPopup").style.display = "none";
+        });
+        
+    </script>
  <!---------------->
 {% endblock content %}

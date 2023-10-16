@@ -17,16 +17,6 @@ window.onclick = function(event) {
     }
 }
 
-function saveTime() {
-    let selectedTime = timePicker.value;
-    if (selectedTime) {
-        alert("Horário salvo: " + selectedTime);
-        popup.style.display = "none";
-    } else {
-        alert("Por favor, selecione um horário.");
-    }
-}
-
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     if (sidebar.style.right === '0px' || sidebar.style.right === '') {
@@ -78,12 +68,13 @@ function mostrarPopupRelatorio() {
     }, 3000);
 }
   
-function fecharPopup() {
+function fechaPopup() {
     const reportPopup = document.getElementById('reportPopupId');
     const reportGeradoPopup = document.getElementById('reportGeradoPopup');
     
     reportPopup.style.display = 'none';
     reportGeradoPopup.style.display = 'none';
+
 }
 
 ////
@@ -98,7 +89,7 @@ function closeCustomPopup() {
     customPopup.style.display = 'none';
 }
 
-/// calendario 
+/// calendário 
 
 function updateCalendar() {
     const currentDate = new Date();
@@ -134,3 +125,85 @@ setInterval(updateCalendar, 1000);
 updateCalendar();
 
 //////
+
+function obterHorarios() {
+    const horarioEntrada = localStorage.getItem('horarioEntrada');
+    const horarioSaida = localStorage.getItem('horarioSaida');
+
+    if (horarioEntrada) {
+        document.querySelectorAll('.time')[0].textContent = horarioEntrada;
+    }
+
+    if (horarioSaida) {
+        document.querySelectorAll('.time')[1].textContent = horarioSaida;
+    }
+}
+
+obterHorarios();
+
+function verificarTeclaEnter(event) {
+    if (event.key === 'Enter') {
+        confirmarEdicao();
+    }
+}
+
+function abrirPopupEdicao(botao) {
+    const popupEdicao = document.getElementById('popupEdicao');
+    popupEdicao.style.display = 'block';
+}
+
+function confirmarEdicao() {
+    const novoHorarioEntradaInput = document.getElementById('novoHorarioEntrada');
+    const novoHorarioSaidaInput = document.getElementById('novoHorarioSaida');
+
+    const horarioEntrada = document.querySelectorAll('.time')[0];
+    const horarioSaida = document.querySelectorAll('.time')[1];
+
+    horarioEntrada.textContent = novoHorarioEntradaInput.value;
+    horarioSaida.textContent = novoHorarioSaidaInput.value;
+
+    // Salvar os horários no localStorage
+    localStorage.setItem('horarioEntrada', novoHorarioEntradaInput.value);
+    localStorage.setItem('horarioSaida', novoHorarioSaidaInput.value);
+
+
+    fecharPopup('popupEdicao');
+}
+
+
+function abrirPopupDeletar(button) {
+    const popupDeletar = document.getElementById('popupDeletar');
+    popupDeletar.style.display = 'block';
+
+    // Define a div "info-day" atual para deleção
+    const infoDay = button.closest('.info-day');
+    popupDeletar.dataset.currentInfoDay = infoDay;
+}
+
+function deletarInfoDay() {
+    const popupDeletar = document.getElementById('popupDeletar');
+    const infoDay = popupDeletar.dataset.currentInfoDay;
+
+    if (infoDay) {
+        infoDay.remove(); // Remove a div "info-day"
+    }
+
+    fecharPopup('popupDeletar'); // Fecha o popup de confirmação
+}
+
+function confirmarDelecao() {
+    const infoDayContainer = document.getElementById('infoDayContainer');
+    const currentInfoDay = infoDayContainer.dataset.currentInfoDay;
+
+    if (currentInfoDay) {
+        infoDayContainer.removeChild(currentInfoDay);
+    }
+
+    fecharPopup('popupDeletar');
+}
+
+function fecharPopup(idPopup) {
+    const popup1 = document.getElementById(idPopup);
+    popup1.style.display = 'none';
+}
+
