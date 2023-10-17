@@ -37,13 +37,87 @@ document.getElementById('backButton').addEventListener('click', function(e) {
 // popup confirmation
 
 function saveTime() {
+    const dataInput = document.getElementById('timePicker');
+    const horaEntradaInput = document.getElementById('horaEntrada');
+    const horaSaidaInput = document.getElementById('horaSaida');
+    const confirmationPopup = document.getElementById('confirmationPopup');
+    const infoDayContainer = document.getElementById('infoDayContainer');
 
-    document.getElementById('confirmationPopup').style.display = 'flex';
 
-    setTimeout(function() {
-        document.getElementById('confirmationPopup').style.display = 'none';
-    }, 2000);
+
+    if (dataInput.value && horaEntradaInput.value && horaSaidaInput.value) {
+
+        const newInfoDay = document.createElement('div');
+        newInfoDay.classList.add('info-day');
+
+        const data = dataInput.value;
+        const horaEntrada = horaEntradaInput.value;
+        const horaSaida = horaSaidaInput.value;
+
+        newInfoDay.innerHTML = `
+            <p>${data} - Seg</p>
+            <p class="time" contenteditable="false">${horaEntrada}</p>
+            <p class="digitalmente">Assinado Digitalmente</p>
+            <p class="time" contenteditable="false">${horaSaida}</p>
+            <div class="edit-out-info">
+                <button title="Editar" onclick="abrirPopupEdicao(this)">
+                    <i class="bi bi-pencil-square"></i>
+                </button>
+                <button title="Deletar" onclick="abrirPopupDeletar()">
+                    <i class="bi bi-trash3"></i>
+                </button>
+            </div>
+        `;
+
+        const infoDayContainer = document.getElementById('infoDayContainer');
+        infoDayContainer.appendChild(newInfoDay);
+
+        confirmationPopup.style.display = 'flex';
+
+
+        setTimeout(function() {
+            confirmationPopup.style.display = 'none';
+        }, 1000);
+
+
+        dataInput.value = '';
+        horaEntradaInput.value = '';
+        horaSaidaInput.value = '';
+
+
+        document.getElementById('saveButton').style.display = 'none';
+    }
 }
+
+
+function verificarPreenchimento() {
+    const dataInput = document.getElementById('timePicker');
+    const horaEntradaInput = document.getElementById('horaEntrada');
+    const horaSaidaInput = document.getElementById('horaSaida');
+    const saveButton = document.getElementById('saveButton');
+
+    if (dataInput.value && horaEntradaInput.value && horaSaidaInput.value) {
+        saveButton.style.display = 'block'; 
+    } else {
+        saveButton.style.display = 'none'; 
+    }
+}
+
+function preencherDataAtual() {
+    const timePicker = document.getElementById('timePicker');
+    
+    const dataAtual = new Date();
+    const ano = dataAtual.getFullYear();
+    const mes = (dataAtual.getMonth() + 1).toString().padStart(2, '0');
+    const dia = dataAtual.getDate().toString().padStart(2, '0');
+    
+    const dataFormatada = `${ano}-${mes}-${dia}`;
+    
+    timePicker.value = dataFormatada;
+}
+
+
+preencherDataAtual();
 
 //// meses anteriores
 
@@ -162,7 +236,7 @@ function confirmarEdicao() {
     horarioEntrada.textContent = novoHorarioEntradaInput.value;
     horarioSaida.textContent = novoHorarioSaidaInput.value;
 
-    // Salvar os horários no localStorage
+ 
     localStorage.setItem('horarioEntrada', novoHorarioEntradaInput.value);
     localStorage.setItem('horarioSaida', novoHorarioSaidaInput.value);
 
@@ -170,40 +244,42 @@ function confirmarEdicao() {
     fecharPopup('popupEdicao');
 }
 
-
-function abrirPopupDeletar(button) {
+function abrirPopupDeletar() {
     const popupDeletar = document.getElementById('popupDeletar');
     popupDeletar.style.display = 'block';
-
-    // Define a div "info-day" atual para deleção
-    const infoDay = button.closest('.info-day');
-    popupDeletar.dataset.currentInfoDay = infoDay;
 }
 
 function deletarInfoDay() {
-    const popupDeletar = document.getElementById('popupDeletar');
-    const infoDay = popupDeletar.dataset.currentInfoDay;
-
-    if (infoDay) {
-        infoDay.remove(); // Remove a div "info-day"
-    }
-
-    fecharPopup('popupDeletar'); // Fecha o popup de confirmação
-}
-
-function confirmarDelecao() {
     const infoDayContainer = document.getElementById('infoDayContainer');
-    const currentInfoDay = infoDayContainer.dataset.currentInfoDay;
-
-    if (currentInfoDay) {
-        infoDayContainer.removeChild(currentInfoDay);
-    }
+    infoDayContainer.innerHTML = '';
 
     fecharPopup('popupDeletar');
 }
+
+// Função para fechar o popup
+function fecharPopup(idPopup) {
+    const popup = document.getElementById(idPopup);
+    popup.style.display = 'none';
+}
+
 
 function fecharPopup(idPopup) {
     const popup1 = document.getElementById(idPopup);
     popup1.style.display = 'none';
 }
 
+document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+
+        fecharTodosPopups();
+    }
+});
+
+function fecharTodosPopups() {
+    const popups = document.querySelectorAll('.popup');
+
+
+    popups.forEach(function (popup) {
+        popup.style.display = 'none';
+    });
+}

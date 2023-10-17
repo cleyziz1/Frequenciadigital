@@ -8,7 +8,7 @@
             <p>DATA - DIA</p>
             <p>ENTRADA</p>
             <p class="digitalmente">ASSINATURA</p>
-            <p>SAÍDA</p>
+            <p class="saida">SAÍDA</p>
             <p></p>
         </div>
 
@@ -27,6 +27,15 @@
             </div>
         </div>
 
+        <div id="popupDeletar" class="popup-delete">
+            <div class="popup-exc">
+                <h2>Tem certeza que deseja exluir este item ?</h2>
+                <button class="btn-del" onclick="deletarInfoDay()">Deletar</button>
+                <button onclick="fecharPopup('popupDeletar')">Cancelar</button>
+            </div>
+        </div>
+
+
         <div id="popupEdicao" class="popup-edit">
             <div class="popup-edi">
                 <h2>Editar Horário</h2>
@@ -38,15 +47,6 @@
                 <button onclick="fecharPopup('popupEdicao')">Cancelar</button>
             </div>
         </div>
-
-        <div id="popupDeletar" class="popup-delete">
-            <div class="popup-exc">
-                <h2>Tem certeza que deseja exluir este item ?</h2>
-                <button class="btn-del" onclick="confirmarDelecao()">Deletar</button>
-                <button onclick="fecharPopup('popupDeletar')">Cancelar</button>
-            </div>
-        </div>
-
 
             <div class="mobile" hidden>
                 <p class="info2">Dia/Mês</p>
@@ -78,9 +78,8 @@
 
 <!-------->
 
-    
 <!-- MARCAR FREQUÊNCIA-->
-    <button class="markup_button" id="openBtn" title="Registrar/Editar Frequência">
+    <button class="markup_button" id="openBtn" title="Registrar Frequência Diária">
                 <i class="bi bi-plus-circle"></i><br>
                 Novo Registro
     </button>
@@ -89,30 +88,34 @@
 <!-- POPUPS -->
 
     <div id="popup" class="popup">
-            <div class="popup-content" id="popup-content">
-                <span id="closeBtn" class="fechar">
-                    <i class="bi bi-x-lg"></i>
-                </span>
-                <h2>Edite seu horário abaixo</h2><br>
-                
-                <div class="time-entry">
-                    <label for="timePicker">Edite o Dia para registrar o ponto:</label>
-                    <input type="date" id="timePicker">
-                </div>
-<br><br>
-                <div class="time-entry">
-                    <label for="timePicker">Registrar horário de entrada:</label>
-                    <input type="time" id="timePicker">
-                </div>
-                
-                <div class="time-entry">
-                    <label for="timePicker">Registrar horário de saída:</label>
-                    <input type="time" id="timePicker">
-                </div><br><br>
-                <button onclick="saveTime()">Salvar</button>
+        <div class="popup-content" id="popup-content">
+            <span id="closeBtn" class="fechar">
+                <i class="bi bi-x-lg"></i>
+            </span>
+            <h2>Registre seu horário abaixo</h2><br>
+            
+            <div class="time-entry">
+                <label for="timePicker">Dia atual para registrar o ponto:</label>
+                <input type="date" id="timePicker" oninput="verificarPreenchimento()">
             </div>
 
+            <br><br>
+
+            <div class="time-entry">
+                <label for="horaEntrada">Registrar horário de entrada:</label>
+                <input type="time" id="horaEntrada" oninput="verificarPreenchimento()">
+            </div>
+            <div class="time-entry">
+                <label for="horaSaida">Registrar horário de saída:</label>
+                <input type="time" id="horaSaida" oninput="verificarPreenchimento()">
+            </div>
+
+            <br><br>
+
+            <button id="saveButton" onclick="saveTime()" class="centered-button" style="display: none">Salvar</button>
+        </div>
     </div>
+
 
     <div id="confirmationPopup" class="confirmation-popup">
             <div class="confirmation-content">
@@ -133,12 +136,13 @@
             document.getElementById("customConfirmationPopup").style.display = "none";
         });
         
-                // Adicione aqui a lógica para a ação de exclusão
         document.getElementById("btnConfirmDelete").addEventListener("click", function () {
         
             document.getElementById("customConfirmationPopup").style.display = "none";
         });
         
+
+
     </script>
  <!---------------->
 {% endblock content %}
