@@ -41,24 +41,26 @@ function saveTime() {
     const horaEntradaInput = document.getElementById('horaEntrada');
     const horaSaidaInput = document.getElementById('horaSaida');
     const confirmationPopup = document.getElementById('confirmationPopup');
-    const infoDayContainer = document.getElementById('infoDayContainer');
+    const infoDaysContainer = document.getElementById('infoDaysContainer');
+
+    if (horaEntradaInput.value && horaSaidaInput.value) {
+
+        const dataAtual = new Date();
+        const dia = dataAtual.getDate();
+        const mes = dataAtual.getMonth() + 1; 
+        const diaSemana = obterDiaSemana(dataAtual.getDay());
 
 
-
-    if (dataInput.value && horaEntradaInput.value && horaSaidaInput.value) {
+        const dataFormatada = `${dia.toString().padStart(2, '0')}/${mes.toString().padStart(2, '0')} - ${diaSemana}`;
 
         const newInfoDay = document.createElement('div');
         newInfoDay.classList.add('info-day');
 
-        const data = dataInput.value;
-        const horaEntrada = horaEntradaInput.value;
-        const horaSaida = horaSaidaInput.value;
-
         newInfoDay.innerHTML = `
-            <p>${data} - Seg</p>
-            <p class="time" contenteditable="false">${horaEntrada}</p>
+            <p>${dataFormatada}</p>
+            <p class="time" contenteditable="false">${horaEntradaInput.value}</p>
             <p class="digitalmente">Assinado Digitalmente</p>
-            <p class="time" contenteditable="false">${horaSaida}</p>
+            <p class="time" contenteditable="false">${horaSaidaInput.value}</p>
             <div class="edit-out-info">
                 <button title="Editar" onclick="abrirPopupEdicao(this)">
                     <i class="bi bi-pencil-square"></i>
@@ -69,26 +71,26 @@ function saveTime() {
             </div>
         `;
 
-        const infoDayContainer = document.getElementById('infoDayContainer');
-        infoDayContainer.appendChild(newInfoDay);
+        infoDaysContainer.appendChild(newInfoDay);
 
         confirmationPopup.style.display = 'flex';
 
-
         setTimeout(function() {
             confirmationPopup.style.display = 'none';
-        }, 1000);
-
+        }, 2000);
 
         dataInput.value = '';
         horaEntradaInput.value = '';
         horaSaidaInput.value = '';
 
-
         document.getElementById('saveButton').style.display = 'none';
     }
 }
 
+function obterDiaSemana(dia) {
+    const diasSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+    return diasSemana[dia];
+}
 
 function verificarPreenchimento() {
     const dataInput = document.getElementById('timePicker');
@@ -115,7 +117,6 @@ function preencherDataAtual() {
     
     timePicker.value = dataFormatada;
 }
-
 
 preencherDataAtual();
 
@@ -227,19 +228,17 @@ function abrirPopupEdicao(botao) {
 }
 
 function confirmarEdicao() {
-    const novoHorarioEntradaInput = document.getElementById('novoHorarioEntrada');
-    const novoHorarioSaidaInput = document.getElementById('novoHorarioSaida');
+    const horaEntradaInput = document.getElementById('novoHorarioEntrada');
+    const horaSaidaInput = document.getElementById('novoHorarioSaida');
 
-    const horarioEntrada = document.querySelectorAll('.time')[0];
-    const horarioSaida = document.querySelectorAll('.time')[1];
 
-    horarioEntrada.textContent = novoHorarioEntradaInput.value;
-    horarioSaida.textContent = novoHorarioSaidaInput.value;
-
- 
-    localStorage.setItem('horarioEntrada', novoHorarioEntradaInput.value);
-    localStorage.setItem('horarioSaida', novoHorarioSaidaInput.value);
-
+    if (infoDayParaEditar) {
+        const timeElements = infoDayParaEditar.querySelectorAll('.time');
+        if (timeElements.length >= 2) {
+            timeElements[0].textContent = horaEntradaInput.value;
+            timeElements[1].textContent = horaSaidaInput.value;
+        }
+    }
 
     fecharPopup('popupEdicao');
 }
@@ -250,13 +249,17 @@ function abrirPopupDeletar() {
 }
 
 function deletarInfoDay() {
-    const infoDayContainer = document.getElementById('infoDayContainer');
-    infoDayContainer.innerHTML = '';
+    const infoDayContainer = document.getElementById('infoDaysContainer'); 
+    const infoDays = infoDayContainer.getElementsByClassName('info-day'); 
+
+    if (infoDays.length > 0) {
+
+        infoDayContainer.removeChild(infoDays[infoDays.length - 1]);
+    }
 
     fecharPopup('popupDeletar');
 }
 
-// Função para fechar o popup
 function fecharPopup(idPopup) {
     const popup = document.getElementById(idPopup);
     popup.style.display = 'none';

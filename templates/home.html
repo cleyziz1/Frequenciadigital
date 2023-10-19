@@ -12,25 +12,28 @@
             <p></p>
         </div>
 
-        <div class="info-day" id="infoDayContainer">
-            <p>01/09 - Seg</p>
-            <p class="time" contenteditable="false">12:00</p>
-            <p class="digitalmente">Assinado Digitalmente</p>
-            <p class="time" contenteditable="false">19:00</p>
-            <div class="edit-out-info">
-                <button title="Editar" onclick="abrirPopupEdicao(this)">
-                    <i class="bi bi-pencil-square"></i>
-                </button>
-                <button title="Deletar" onclick="abrirPopupDeletar()">
-                    <i class="bi bi-trash3"></i>
-                </button>
+        <div id="infoDaysContainer">
+            <div class="info-day">
+                <p>01/09 - Seg</p>
+                <p class="time" contenteditable="false">12:00</p>
+                <p class="digitalmente">Assinado Digitalmente</p>
+                <p class="time" contenteditable="false">19:00</p>
+                <div class="edit-out-info">
+                    <button title="Editar" onclick="abrirPopupEdicao(this)">
+                        <i class="bi bi-pencil-square"></i>
+                    </button>
+                    <button title="Deletar" onclick="abrirPopupDeletar()">
+                        <i class="bi bi-trash3"></i>
+                    </button>
+                </div>
             </div>
+
         </div>
 
         <div id="popupDeletar" class="popup-delete">
             <div class="popup-exc">
                 <h2>Tem certeza que deseja exluir este item ?</h2>
-                <button class="btn-del" onclick="deletarInfoDay()">Deletar</button>
+                <button class="btn-del" title="Deletar" onclick="deletarInfoDay(this)">Deletar</button>
                 <button onclick="fecharPopup('popupDeletar')">Cancelar</button>
             </div>
         </div>
@@ -43,7 +46,7 @@
                 <input type="time" id="novoHorarioEntrada" placeholder="Novo Horário de Entrada">
                 <label for="novoHorarioSaida">Mude o horário de saída:</label>
                 <input type="time" id="novoHorarioSaida" placeholder="Novo Horário de Saída">
-                <button onclick="confirmarEdicao()">Salvar</button>
+                <button onclick="confirmarEdicao(this.parentElement)">Salvar</button>
                 <button onclick="fecharPopup('popupEdicao')">Cancelar</button>
             </div>
         </div>
